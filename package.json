@@ -1,9 +1,12 @@
 {
   "name": "sd_notify_promise",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Implementation of libsystemd's sd_notify using unix-dgram socket",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +25,9 @@
   "homepage": "https://github.com/yonran/sd_notify_promise#readme",
   "dependencies": {
     "unix-dgram": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.3.3",
+    "typescript": "^2.9.2"
   }
 }

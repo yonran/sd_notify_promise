@@ -1,5 +1,5 @@
 import { createSocket } from "unix-dgram";
-export default function sd_notify(unsetEnvironment, state) {
+export default function sd_notify(unsetEnvironment: boolean, state: string) {
     return new Promise((resolve, reject) => {
         let notifySocket = process.env.NOTIFY_SOCKET
         if (notifySocket == null)
@@ -14,7 +14,7 @@ export default function sd_notify(unsetEnvironment, state) {
         }
         const client = createSocket("unix_dgram")
         let closed = false
-        const closeAndComplete = (e) => {
+        const closeAndComplete = (e?: Error) => {
             let closeError;
             try {
                 if (!closed) {
@@ -40,7 +40,8 @@ export default function sd_notify(unsetEnvironment, state) {
         client.on("connect", onConnected)
         client.connect(notifySocket)
         function onConnected() {
-            const message = Buffer.from(state, 'ascii')
+            // STATUS=… is UTF-8, and all other messages are ASCII
+            const message = Buffer.from(state, 'utf8')
             client.send(message)
             closeAndComplete()
         }

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES2015",
+        "module": "commonjs",
+        "declaration": true,
+        "baseUrl": ".", // This must be specified if paths is
+        "paths": {
+            "unix-dgram": ["@types/unix-dgram"]
+        },
+        "outDir": "dist",
+        "strict": true
+    }
+}
