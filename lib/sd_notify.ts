@@ -1,9 +1,9 @@
 import { createSocket } from "unix-dgram";
-export default function sd_notify(unsetEnvironment: boolean, state: string) {
-    return new Promise((resolve, reject) => {
+export default function sd_notify(unsetEnvironment: boolean, state: string): Promise<null> {
+    return new Promise<null>((resolve, reject) => {
         let notifySocket = process.env.NOTIFY_SOCKET
         if (notifySocket == null)
-            return null
+            return resolve(null)
         if (! (notifySocket.startsWith("@") || notifySocket.startsWith("/")))
             throw new Error("NOTIFY_SOCKET does not start with @ or /")
         if (notifySocket.length < 2)
