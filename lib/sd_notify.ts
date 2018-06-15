@@ -1,9 +1,16 @@
 import { createSocket } from "unix-dgram";
-export default function sd_notify(unsetEnvironment: boolean, state: string): Promise<null> {
-    return new Promise<null>((resolve, reject) => {
+/**
+ * Send notification to systemd.
+ *
+ * Returns a promise that is true if the notification succeeded,
+ * false if NOTIFY_SOCKET is undefined,
+ * or is rejected if there was an error
+ */
+export default function sd_notify(unsetEnvironment: boolean, state: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
         let notifySocket = process.env.NOTIFY_SOCKET
         if (notifySocket == null)
-            return resolve(null)
+            return resolve(false)
         if (! (notifySocket.startsWith("@") || notifySocket.startsWith("/")))
             throw new Error("NOTIFY_SOCKET does not start with @ or /")
         if (notifySocket.length < 2)
@@ -30,7 +37,7 @@ export default function sd_notify(unsetEnvironment: boolean, state: string): Pro
                 if (e) {
                     reject(e)
                 } else {
-                    resolve()
+                    resolve(true)
                 }
             }
         }
