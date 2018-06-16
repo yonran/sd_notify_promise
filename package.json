@@ -7,7 +7,7 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require ts-node/register --reporter spec test.ts"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,12 @@
     "unix-dgram": "^2.0.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.2",
     "@types/node": "^10.3.3",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "ts-node": "^6.1.1",
     "typescript": "^2.9.2"
   }
 }

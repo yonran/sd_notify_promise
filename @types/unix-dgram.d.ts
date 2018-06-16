@@ -18,6 +18,12 @@ declare module "unix-dgram" {
         bind(path: string): void
         connect(path: string): void
         send(buf: Buffer, callback?: SendCallback): void
+        on(event: "message", callback: OnMessageCallback): this
+        on(event: "writable", callback: () => void): this
+        on(event: "listening", callback: () => void): this
+        on(event: "connect", callback: () => void): this
+        on(event: "congestion", callback: (buf: Buffer) => void): this
+        on(event: "error", callback: (e: ErrnoException | InternalError) => void): this
         close(): void
     }
     export function createSocket(type: SocketType, listener?: OnMessageCallback): Socket
