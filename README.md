@@ -3,7 +3,7 @@ This is an implementation of systemd’s simple sd_notify protocol as described 
 ## API
 
 ```js
-function sd_notify(unsetEnvironment: boolean, state: string): Promise<boolean>
+function sd_notify(state: string, {unsetEnvironment?: boolean}): Promise<boolean>
 ```
 
 Sends the string in `state` to systemd (which is identified by the `NOTIFY_SOCKET` environment variable), and returns a `Promise` that completes once the message has been sent. The promise resolves to true if the message was sent, or false if `NOTIFY_SOCKET` was unset.
@@ -13,13 +13,13 @@ If `unsetEnvironment` is set, deletes the `process.env.NOTIFY_SOCKET` field so t
 Typically you would use it like this. For a full list of messages that systemd understands, see the [sd_notify](https://www.freedesktop.org/software/systemd/man/sd_notify.html#Description) documentation.
 
 ```js
-sd_notify(false, "STATUS=loading").catch(console.error)
-sd_notify(false, "READY=1").catch(console.error)
-sd_notify(false, "STATUS=serving").catch(console.error)
+sd_notify("STATUS=loading").catch(console.error)
+sd_notify("READY=1").catch(console.error)
+sd_notify("STATUS=serving").catch(console.error)
 if (parseInt(process.env.WATCHDOG_USEC)) setInterval(() => {
     // check server health…
 
-    sd_notify(false, "WATCHDOG=1").catch(console.error)
+    sd_notify("WATCHDOG=1").catch(console.error)
 }, parseInt(process.env.WATCHDOG_USEC)/1000/2)
 ```
 

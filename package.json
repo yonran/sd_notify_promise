@@ -1,6 +1,6 @@
 {
   "name": "sd_notify_promise",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Implementation of libsystemd's sd_notify using unix-dgram socket",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

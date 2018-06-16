@@ -1,4 +1,7 @@
 import { createSocket } from "unix-dgram";
+interface Options {
+    unsetEnvironment?: boolean,
+}
 /**
  * Send notification to systemd.
  *
@@ -6,7 +9,9 @@ import { createSocket } from "unix-dgram";
  * false if NOTIFY_SOCKET is undefined,
  * or is rejected if there was an error
  */
-export default function sd_notify(unsetEnvironment: boolean, state: string): Promise<boolean> {
+export default function sd_notify(state: string, options?: Options): Promise<boolean> {
+    options = options || {}
+    const {unsetEnvironment} = options
     return new Promise<boolean>((resolve, reject) => {
         let notifySocket = process.env.NOTIFY_SOCKET
         if (notifySocket == null)

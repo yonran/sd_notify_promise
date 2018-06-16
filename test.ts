@@ -18,7 +18,7 @@ describe("sd_notify", () => {
                 })
                 socket.on("error", reject)
             })
-            chai.expect(await sd_notify(false, "hello")).to.be.true
+            chai.expect(await sd_notify("hello")).to.be.true
             const msg = await receivedMessagePromise as Buffer
             chai.expect(msg.toString("hex"))
                 .to.equal(Buffer.from("hello").toString("hex"))
@@ -36,9 +36,9 @@ describe("sd_notify", () => {
         process.env.NOTIFY_SOCKET = path
         socket.bind(path)
         try {
-            chai.expect(await sd_notify(false, "hello")).to.be.true
+            chai.expect(await sd_notify("hello")).to.be.true
             chai.expect(process.env.NOTIFY_SOCKET).to.equal(path)
-            chai.expect(await sd_notify(true, "hello")).to.be.true
+            chai.expect(await sd_notify("hello", {unsetEnvironment: true})).to.be.true
             chai.expect(process.env.NOTIFY_SOCKET).to.be.undefined
         } finally {
             try {
@@ -50,8 +50,8 @@ describe("sd_notify", () => {
     })
     it("should resolve to false when NOTIFY_SOCKET is unset", async () => {
         delete process.env.NOTIFY_SOCKET
-        chai.expect(await sd_notify(false, "hello")).to.be.false
-        chai.expect(await sd_notify(true, "hello")).to.be.false
+        chai.expect(await sd_notify("hello")).to.be.false
+        chai.expect(await sd_notify("hello", {unsetEnvironment: true})).to.be.false
     })
     it("should be able to connect to abstract namespace sockets on linux", async () => {
         if (os.platform() !== "linux") return
@@ -66,7 +66,7 @@ describe("sd_notify", () => {
                 })
                 socket.on("error", reject)
             })
-            chai.expect(await sd_notify(false, "hello")).to.be.true
+            chai.expect(await sd_notify("hello")).to.be.true
             const msg = await receivedMessagePromise as Buffer
             chai.expect(msg.toString("hex"))
                 .to.equal(Buffer.from("hello").toString("hex"))
